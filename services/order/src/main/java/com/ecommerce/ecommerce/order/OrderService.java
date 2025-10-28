@@ -22,7 +22,7 @@ public class OrderService {
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
 
-    public Integer createOrder(@Valid OrderRequest orderRequest) {
+    public Integer createOrder(OrderRequest orderRequest) {
         var customer = customerClient.findCustomerById(orderRequest.customerId())
                 .orElseThrow(() -> new BusinessException("Cannot create order:: No customer found with id " + orderRequest.customerId()));
 
