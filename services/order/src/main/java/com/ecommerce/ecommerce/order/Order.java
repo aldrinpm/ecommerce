@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,10 +31,12 @@ public class Order {
     private String customerId;
     @OneToMany(mappedBy = "order")
     private List<OrderLine> orderLineList;
+
     @CreatedDate
     @Column(updatable = false, nullable = false)
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
+
     @LastModifiedDate
-    @Column(insertable = false, nullable = false)
-    private LocalDateTime lastModifiedDate;
+    @Column(nullable = false)
+    private LocalDate lastModifiedDate;
 }
