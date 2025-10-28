@@ -6,9 +6,10 @@ import com.ecommerce.ecommerce.kafka.OrderConfirmation;
 import com.ecommerce.ecommerce.kafka.OrderProducer;
 import com.ecommerce.ecommerce.orderline.OrderLineRequest;
 import com.ecommerce.ecommerce.orderline.OrderLineService;
+import com.ecommerce.ecommerce.payment.PaymentClient;
+import com.ecommerce.ecommerce.payment.PaymentRequest;
 import com.ecommerce.ecommerce.product.ProductClient;
 import com.ecommerce.ecommerce.product.PurchaseRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
 
     public Integer createOrder(OrderRequest orderRequest) {
         var customer = customerClient.findCustomerById(orderRequest.customerId())
@@ -43,6 +45,15 @@ public class OrderService {
                     )
             );
         }
+
+        var paymentRequest = new PaymentRequest(
+                orderRequest.amount(),
+                orderRequest.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
         orderProducer.sendOrderConfirmation(
                 new OrderConfirmation(
