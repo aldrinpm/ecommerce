@@ -2,6 +2,11 @@ server:
   port: 8222
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:9098/realms/micro-services"
   cloud:
     loadbalancer:
       cache:
