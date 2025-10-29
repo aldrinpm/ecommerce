@@ -19,7 +19,6 @@ import java.util.Map;
 
 import static com.ecommerce.ecommerce.email.EmailTemplates.ORDER_CONFIRMATION;
 import static com.ecommerce.ecommerce.email.EmailTemplates.PAYMENT_CONFIRMATION;
-import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_RELATED;
 
@@ -59,7 +58,7 @@ public class EmailService {
             messageHelper.setText(htmlTemplate, true);
             messageHelper.setTo(destinationEmail);
             mailSender.send(mimeMessage);
-            log.info(format("INFO - Email successfully sent to %s with template %s, ", destinationEmail));
+            log.info("INFO - Email successfully sent to {} with template {}, ", destinationEmail, templateName);
         } catch (MessagingException e) {
             log.warn("WARNING - Cannot send email to {} ", destinationEmail);
         }
